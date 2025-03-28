@@ -1,0 +1,44 @@
+// ==UserScript==
+// @name         Nyaa remove cringe
+// @version      6.9
+// @description  Remove any and all cringe from Nyaa.si
+// @author       penis
+// @match        https://nyaa.si/*
+// @exclude      https://nyaa.si/view/*
+// @icon         https://nyaa.si/favicon.ico
+// @run-at       document-end
+// @grant        GM_xmlhttpRequest
+// @connect      raw.githubusercontent.com
+// ==/UserScript==
+
+function removeCringe(bannedWords) {
+    torrents:
+    for (const torrent of document.querySelectorAll('div.table-responsive tbody> tr')) {
+        let text = torrent.querySelector('td:nth-child(2) > a:not([class="comments"])')?.textContent?.toLowerCase();
+        for (const word of bannedWords) {
+            if (text?.includes(word.toLowerCase())) {
+                torrent.remove();
+                continue torrents;
+            }
+        }
+    }
+}
+
+function fetchBannedWords() {
+    GM_xmlhttpRequest({
+        method: "GET",
+        url: "https://raw.githubusercontent.com/StazCherry69/banslop/refs/heads/main/bannedwords.txt",
+        onload: function(response) {
+            const bannedWords = response.responseText.split("\n").map(word => word.trim()).filter(word => word);
+            removeCringe(bannedWords);
+        },
+        onerror: function() {
+            console.error("Failed to load banned words list.");
+        }
+    });
+}
+
+(function() {
+    'use strict';
+    fetchBannedWords();
+})();
