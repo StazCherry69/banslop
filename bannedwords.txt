@@ -51,3 +51,6 @@ kotex
 fortunatv
 chinese
 furretar
+cicakrumah
+lesslocalized
+JP-EN
