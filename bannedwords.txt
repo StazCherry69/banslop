@@ -54,3 +54,5 @@ furretar
 cicakrumah
 lesslocalized
 JP-EN
+anitsu
+shincaps
